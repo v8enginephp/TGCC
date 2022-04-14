@@ -1,0 +1,7 @@
+{
+    "autoload": {
+        "psr-4": {
+            "V8\\Telegram\\": "V8/Telegram/"
+        }
+    }
+}

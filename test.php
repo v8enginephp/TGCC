@@ -2,14 +2,11 @@
 
 use V8\Telegram\ChannelCrawler;
 
-require 'V8/Telegram/ChannelCrawler.php';
-require 'V8/Telegram/Message.php';
-require 'V8/Telegram/Media.php';
+require __DIR__."/vendor/autoload.php";
 
+$crawler = new ChannelCrawler('test9733');
 
-$crawler = new ChannelCrawler('almahdilaptop');
-
-$messages = $crawler->getMessages(5000);
+$messages = $crawler->getMessages(2);
 print_r($messages);
 die();
 echo $messages[0]->getText();

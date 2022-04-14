@@ -5,7 +5,7 @@ namespace V8\Telegram;
 class ChannelCrawler
 {
     private $channel;
-    const MESSAGE_REGEX = '/js-widget_message"(.*?)js-widget_message/m';
+    const MESSAGE_REGEX = '/js-widget_message"(.*?)<\/time>/m';
 
 
     public function __construct($channel)
@@ -13,22 +13,22 @@ class ChannelCrawler
         $this->channel = $channel;
     }
 
-    public function getContent($after = null)
+    public function getContent($after = null, $q = null)
     {
-        return str_replace(["\n", "\r"], "", file_get_contents($this->getUrl($after)));
+        return str_replace(["\n", "\r"], "", file_get_contents($this->getUrl($after, $q)));
     }
 
-    public function getUrl($after = null)
+    public function getUrl($after = null, $q = null)
     {
-        return 'https://telegram.me/s/' . $this->channel . ($after ? '?after=' . $after : '');
+        return 'https://telegram.me/s/' . $this->channel . ($after ? '?after=' . $after : '') . ($q ? '?q=' . $q : '');
     }
 
     /**
      * @return Message[]
      */
-    public function getMessages($after = null)
+    public function getMessages($after = null, $q = null)
     {
-     preg_match_all(static::MESSAGE_REGEX, $this->getContent($after),$matches);
+        preg_match_all(static::MESSAGE_REGEX, $this->getContent($after, $q), $matches);
         $messages = [];
         foreach ($matches[1] as $item) {
             $messages[] = Message::parse($item);
